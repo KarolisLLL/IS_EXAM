@@ -1,0 +1,31 @@
+seed: 2026
+
+data:
+  openml_data_id: 31
+  cache_dir: data/openml_cache_final
+  expected_target_values: [good, bad]
+  holdout_size: 0.20
+
+preprocessing:
+  # Jei true, age ir personal_status nebus naudojami mokymui.
+  drop_sensitive_features: false
+
+evaluation:
+  outer_splits: 5
+  outer_repeats: 3
+  inner_splits: 3
+  tuning_trials: 5
+  n_jobs: 1
+  calibration_bins: 10
+
+costs:
+  false_positive: 1.0  # gero kliento atmetimas
+  false_negative: 5.0  # blogos rizikos paraiškos patvirtinimas
+
+models:
+  active: [majority, reject_all, logistic, svm, mlp, fuzzy]
+  main_candidate: svm
+  mlp_max_iter: 400
+
+output:
+  directory: results/final

@@ -1,0 +1,36 @@
+{
+  "openml_data_id": 31,
+  "dataset_name": "credit-g",
+  "source_url": "https://www.openml.org/d/31",
+  "rows": 1000,
+  "columns": [
+    "checking_status",
+    "duration",
+    "credit_history",
+    "purpose",
+    "credit_amount",
+    "savings_status",
+    "employment",
+    "installment_commitment",
+    "personal_status",
+    "other_parties",
+    "residence_since",
+    "property_magnitude",
+    "age",
+    "other_payment_plans",
+    "housing",
+    "existing_credits",
+    "job",
+    "num_dependents",
+    "own_telephone",
+    "foreign_worker"
+  ],
+  "target_mapping": {
+    "good": 0,
+    "bad": 1
+  },
+  "bad_class_count": 300,
+  "good_class_count": 700,
+  "content_sha256": "b65c21f07544c8cd5af1ae60f90dafd939cc993b0ed3f9463246977fd63a5809",
+  "openml_version": "1"
+}

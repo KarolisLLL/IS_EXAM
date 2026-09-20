@@ -1,0 +1,320 @@
+<!doctype html><html lang="lt"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kredito rizikos eksperimento rezultatai</title>
+<style>body{font:17px/1.55 system-ui,sans-serif;max-width:1100px;margin:40px auto;padding:0 24px;color:#182434;background:#f8fafc}h1{font-size:34px;line-height:1.2}h2{margin-top:42px}table{border-collapse:collapse;background:white;width:100%;font-size:14px}td,th{padding:10px;border:1px solid #d9dfe7;text-align:left}th{background:#e8eef6}.scroll{overflow:auto}img{max-width:100%;background:white}input{width:100%;accent-color:#2463ac}output{font-weight:700}#matrix{max-width:650px}a{color:#165aa3}.muted{color:#526274}</style>
+<h1>Kredito paraiškų rizikos analizė</h1>
+<p>Karolis Lapinskas · PEPfm-26 · Galutinio darbo eksperimentas</p>
+<p>OpenML credit-g: 1 000 įrašų, 20 požymių. Plėtros dalis: 800 įrašų, 5 × 3 kartotinis stratifikacinis vertinimas. Galutinis testas: 200 įrašų.</p>
+<h2>Modelių palyginimas plėtros dalyje</h2><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Metodas</th>
+      <th>Balanced accuracy</th>
+      <th>AP (PR)</th>
+      <th>Brier</th>
+      <th>Klaidų kaina</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>svm</td>
+      <td>0.665</td>
+      <td>0.605</td>
+      <td>0.170</td>
+      <td>0.558</td>
+    </tr>
+    <tr>
+      <td>mlp</td>
+      <td>0.635</td>
+      <td>0.572</td>
+      <td>0.179</td>
+      <td>0.590</td>
+    </tr>
+    <tr>
+      <td>logistic</td>
+      <td>0.661</td>
+      <td>0.605</td>
+      <td>0.178</td>
+      <td>0.592</td>
+    </tr>
+    <tr>
+      <td>fuzzy</td>
+      <td>0.595</td>
+      <td>0.512</td>
+      <td>0.250</td>
+      <td>0.628</td>
+    </tr>
+    <tr>
+      <td>reject_all</td>
+      <td>0.500</td>
+      <td>0.300</td>
+      <td>0.700</td>
+      <td>0.700</td>
+    </tr>
+    <tr>
+      <td>majority</td>
+      <td>0.500</td>
+      <td>0.300</td>
+      <td>0.300</td>
+      <td>1.500</td>
+    </tr>
+  </tbody>
+</table>
+<p>Parinktas modelis: <strong>svm</strong>. Pasirinkimo kriterijus: mažiausia vidutinė CV klaidų kaina, kai FN kaina yra 5, o FP kaina 1.</p>
+<img src="model_comparison.png" alt="Metodų vidutinės klaidų kainos ir AP palyginimas">
+<h2>Galutinio testo rezultatai</h2><p>Balanced accuracy: 0.654 · AP: 0.678 · Brier: 0.153 · Kaina: 0.525.</p>
+<p>AP apskaičiuotas funkcija average_precision_score. Failų stulpelis pr_auc reiškia AP, o ne trapecinę PR kreivės integraciją.</p>
+<h2>Kaip slenkstis keičia klaidas</h2>
+<p>Slenkstis pasirinktas tik plėtros duomenyse: <strong>0.15</strong>. Žemiau esantis valdiklis rodo galutinio testo diagnostiką; pagal jį modelis ir slenkstis neperrenkami.</p>
+<label for="threshold">Diagnostinis slenkstis <output id="value"></output></label>
+<input id="threshold" type="range" min="0" max="1" step="0.01" value="0.15">
+<p id="cost"></p><div id="matrix"></div>
+<img src="calibration_final_test.png" alt="Prognozuotų tikimybių ir stebėtos blogos rizikos dalies palyginimas">
+<h2>Požymių abliacija</h2><div class='scroll'><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>balanced_accuracy</th>
+      <th>pr_auc</th>
+      <th>brier_score</th>
+      <th>expected_cost</th>
+      <th>threshold</th>
+      <th>tn</th>
+      <th>fp</th>
+      <th>fn</th>
+      <th>tp</th>
+      <th>feature_set</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.654</td>
+      <td>0.678</td>
+      <td>0.153</td>
+      <td>0.525</td>
+      <td>0.150</td>
+      <td>50</td>
+      <td>90</td>
+      <td>3</td>
+      <td>57</td>
+      <td>all_features</td>
+    </tr>
+    <tr>
+      <td>0.674</td>
+      <td>0.650</td>
+      <td>0.160</td>
+      <td>0.510</td>
+      <td>0.180</td>
+      <td>58</td>
+      <td>82</td>
+      <td>4</td>
+      <td>56</td>
+      <td>without_age_and_personal_status</td>
+    </tr>
+  </tbody>
+</table></div><h2>Trūkstamų reikšmių bandymas</h2><div class='scroll'><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>balanced_accuracy</th>
+      <th>pr_auc</th>
+      <th>brier_score</th>
+      <th>expected_cost</th>
+      <th>threshold</th>
+      <th>tn</th>
+      <th>fp</th>
+      <th>fn</th>
+      <th>tp</th>
+      <th>missing_fraction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.657</td>
+      <td>0.662</td>
+      <td>0.155</td>
+      <td>0.520</td>
+      <td>0.150</td>
+      <td>51</td>
+      <td>89</td>
+      <td>3</td>
+      <td>57</td>
+      <td>0.050</td>
+    </tr>
+    <tr>
+      <td>0.663</td>
+      <td>0.658</td>
+      <td>0.154</td>
+      <td>0.525</td>
+      <td>0.150</td>
+      <td>55</td>
+      <td>85</td>
+      <td>4</td>
+      <td>56</td>
+      <td>0.100</td>
+    </tr>
+  </tbody>
+</table></div><h2>Grupių diagnostika</h2><div class='scroll'><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>audit</th>
+      <th>group</th>
+      <th>n</th>
+      <th>bad_recall</th>
+      <th>good_rejection_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>age_group</td>
+      <td>25_or_over</td>
+      <td>174</td>
+      <td>0.936</td>
+      <td>0.622</td>
+    </tr>
+    <tr>
+      <td>age_group</td>
+      <td>under_25</td>
+      <td>26</td>
+      <td>1.000</td>
+      <td>0.846</td>
+    </tr>
+    <tr>
+      <td>personal_status_group</td>
+      <td>female</td>
+      <td>63</td>
+      <td>0.955</td>
+      <td>0.732</td>
+    </tr>
+    <tr>
+      <td>personal_status_group</td>
+      <td>other</td>
+      <td>137</td>
+      <td>0.947</td>
+      <td>0.606</td>
+    </tr>
+  </tbody>
+</table></div><h2>Klaidų pavyzdžiai</h2><div class='scroll'><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>test_row</th>
+      <th>error_type</th>
+      <th>actual_class</th>
+      <th>predicted_class</th>
+      <th>bad_probability</th>
+      <th>decision_threshold</th>
+      <th>duration</th>
+      <th>credit_amount</th>
+      <th>checking_status</th>
+      <th>purpose</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>409</td>
+      <td>false_negative</td>
+      <td>bad</td>
+      <td>good</td>
+      <td>0.123</td>
+      <td>0.150</td>
+      <td>12</td>
+      <td>939</td>
+      <td>&gt;=200</td>
+      <td>new car</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <td>190</td>
+      <td>false_negative</td>
+      <td>bad</td>
+      <td>good</td>
+      <td>0.142</td>
+      <td>0.150</td>
+      <td>24</td>
+      <td>4591</td>
+      <td>no checking</td>
+      <td>business</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>278</td>
+      <td>false_negative</td>
+      <td>bad</td>
+      <td>good</td>
+      <td>0.147</td>
+      <td>0.150</td>
+      <td>6</td>
+      <td>4611</td>
+      <td>no checking</td>
+      <td>furniture/equipment</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>286</td>
+      <td>false_positive</td>
+      <td>good</td>
+      <td>bad</td>
+      <td>0.690</td>
+      <td>0.150</td>
+      <td>48</td>
+      <td>4788</td>
+      <td>&lt;0</td>
+      <td>used car</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>815</td>
+      <td>false_positive</td>
+      <td>good</td>
+      <td>bad</td>
+      <td>0.685</td>
+      <td>0.150</td>
+      <td>36</td>
+      <td>7432</td>
+      <td>0&lt;=X&lt;200</td>
+      <td>new car</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>501</td>
+      <td>false_positive</td>
+      <td>good</td>
+      <td>bad</td>
+      <td>0.673</td>
+      <td>0.150</td>
+      <td>36</td>
+      <td>5493</td>
+      <td>&lt;0</td>
+      <td>used car</td>
+      <td>42</td>
+    </tr>
+    <tr>
+      <td>735</td>
+      <td>false_positive</td>
+      <td>good</td>
+      <td>bad</td>
+      <td>0.665</td>
+      <td>0.150</td>
+      <td>36</td>
+      <td>3990</td>
+      <td>0&lt;=X&lt;200</td>
+      <td>domestic appliance</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <td>395</td>
+      <td>false_positive</td>
+      <td>good</td>
+      <td>bad</td>
+      <td>0.661</td>
+      <td>0.150</td>
+      <td>39</td>
+      <td>11760</td>
+      <td>0&lt;=X&lt;200</td>
+      <td>education</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2>Ribos</h2><p>Tai istorinių mokomųjų duomenų prototipas. Klaidos kaina pateikta sąlyginiais vienetais. Mažos grupės ir persidengiantys CV skaidymai neleidžia šio rezultato laikyti banko sistemos patvirtinimu ar statistinio pranašumo įrodymu.</p>
+<p><a href="model_summary.csv">CV lentelė CSV</a> · <a href="final_test_metrics.json">Testo metrikos JSON</a> · <a href="threshold_diagnostics.csv">Slenksčių diagnostika CSV</a></p>
+<script>const data=[{"actual_bad":1,"bad_probability":0.1466681292},{"actual_bad":0,"bad_probability":0.0534726444},{"actual_bad":0,"bad_probability":0.2948088213},{"actual_bad":1,"bad_probability":0.242502704},{"actual_bad":0,"bad_probability":0.5035665672},{"actual_bad":1,"bad_probability":0.7553595454},{"actual_bad":0,"bad_probability":0.4733811993},{"actual_bad":0,"bad_probability":0.3354893979},{"actual_bad":0,"bad_probability":0.3239067959},{"actual_bad":0,"bad_probability":0.6731719498},{"actual_bad":0,"bad_probability":0.3158798601},{"actual_bad":0,"bad_probability":0.1028923414},{"actual_bad":0,"bad_probability":0.1596626746},{"actual_bad":1,"bad_probability":0.6302004287},{"actual_bad":0,"bad_probability":0.229044165},{"actual_bad":1,"bad_probability":0.3944180076},{"actual_bad":0,"bad_probability":0.2897732485},{"actual_bad":0,"bad_probability":0.1074499528},{"actual_bad":1,"bad_probability":0.6431455626},{"actual_bad":1,"bad_probability":0.5899051754},{"actual_bad":0,"bad_probability":0.3686710642},{"actual_bad":0,"bad_probability":0.2555360176},{"actual_bad":0,"bad_probability":0.341185999},{"actual_bad":1,"bad_probability":0.681964884},{"actual_bad":0,"bad_probability":0.0660331293},{"actual_bad":1,"bad_probability":0.7718537547},{"actual_bad":0,"bad_probability":0.1215182628},{"actual_bad":0,"bad_probability":0.6071215193},{"actual_bad":0,"bad_probability":0.0721914701},{"actual_bad":0,"bad_probability":0.1331345847},{"actual_bad":0,"bad_probability":0.0952265238},{"actual_bad":1,"bad_probability":0.5996763069},{"actual_bad":0,"bad_probability":0.3454865784},{"actual_bad":1,"bad_probability":0.6566174062},{"actual_bad":0,"bad_probability":0.4438287996},{"actual_bad":0,"bad_probability":0.0697585637},{"actual_bad":0,"bad_probability":0.1124391679},{"actual_bad":0,"bad_probability":0.1867484716},{"actual_bad":0,"bad_probability":0.2258593668},{"actual_bad":1,"bad_probability":0.6091315538},{"actual_bad":1,"bad_probability":0.2578795545},{"actual_bad":0,"bad_probability":0.1588087302},{"actual_bad":0,"bad_probability":0.3495484665},{"actual_bad":0,"bad_probability":0.1045081289},{"actual_bad":1,"bad_probability":0.5305062651},{"actual_bad":0,"bad_probability":0.3973650617},{"actual_bad":0,"bad_probability":0.6393449933},{"actual_bad":0,"bad_probability":0.3978990561},{"actual_bad":0,"bad_probability":0.1503805415},{"actual_bad":0,"bad_probability":0.250095433},{"actual_bad":1,"bad_probability":0.4376764522},{"actual_bad":1,"bad_probability":0.5455384543},{"actual_bad":0,"bad_probability":0.4301861629},{"actual_bad":0,"bad_probability":0.2483553676},{"actual_bad":0,"bad_probability":0.5018730035},{"actual_bad":0,"bad_probability":0.0427447839},{"actual_bad":0,"bad_probability":0.1053083889},{"actual_bad":1,"bad_probability":0.3859474134},{"actual_bad":0,"bad_probability":0.0255588724},{"actual_bad":0,"bad_probability":0.664505474},{"actual_bad":0,"bad_probability":0.2293812641},{"actual_bad":1,"bad_probability":0.5393103942},{"actual_bad":0,"bad_probability":0.3594696173},{"actual_bad":0,"bad_probability":0.0340677881},{"actual_bad":0,"bad_probability":0.0567579409},{"actual_bad":0,"bad_probability":0.364192618},{"actual_bad":0,"bad_probability":0.6034314558},{"actual_bad":0,"bad_probability":0.4874572806},{"actual_bad":0,"bad_probability":0.5151309068},{"actual_bad":0,"bad_probability":0.1871275487},{"actual_bad":0,"bad_probability":0.0408900757},{"actual_bad":0,"bad_probability":0.0681202448},{"actual_bad":0,"bad_probability":0.0607428752},{"actual_bad":1,"bad_probability":0.5034082043},{"actual_bad":0,"bad_probability":0.1683782991},{"actual_bad":1,"bad_probability":0.1418890457},{"actual_bad":0,"bad_probability":0.3097558007},{"actual_bad":0,"bad_probability":0.2000392899},{"actual_bad":1,"bad_probability":0.3818098084},{"actual_bad":0,"bad_probability":0.216487398},{"actual_bad":0,"bad_probability":0.0407893781},{"actual_bad":1,"bad_probability":0.5522781592},{"actual_bad":0,"bad_probability":0.0465642664},{"actual_bad":1,"bad_probability":0.3478851573},{"actual_bad":0,"bad_probability":0.0960463652},{"actual_bad":1,"bad_probability":0.3353463984},{"actual_bad":0,"bad_probability":0.1174233965},{"actual_bad":1,"bad_probability":0.7458001973},{"actual_bad":1,"bad_probability":0.239859319},{"actual_bad":1,"bad_probability":0.3513822956},{"actual_bad":1,"bad_probability":0.5889443267},{"actual_bad":0,"bad_probability":0.5817085328},{"actual_bad":1,"bad_probability":0.6721100045},{"actual_bad":0,"bad_probability":0.1536877599},{"actual_bad":0,"bad_probability":0.1380177129},{"actual_bad":1,"bad_probability":0.4557185001},{"actual_bad":1,"bad_probability":0.6454654247},{"actual_bad":0,"bad_probability":0.2060576666},{"actual_bad":0,"bad_probability":0.4004530962},{"actual_bad":0,"bad_probability":0.1012839678},{"actual_bad":0,"bad_probability":0.1507754352},{"actual_bad":0,"bad_probability":0.2649317269},{"actual_bad":0,"bad_probability":0.2568421243},{"actual_bad":0,"bad_probability":0.2329340843},{"actual_bad":0,"bad_probability":0.0667237887},{"actual_bad":0,"bad_probability":0.3518991002},{"actual_bad":0,"bad_probability":0.2366213799},{"actual_bad":0,"bad_probability":0.1721257084},{"actual_bad":0,"bad_probability":0.6899463953},{"actual_bad":0,"bad_probability":0.1800450428},{"actual_bad":0,"bad_probability":0.160422091},{"actual_bad":0,"bad_probability":0.0797709151},{"actual_bad":0,"bad_probability":0.1570241954},{"actual_bad":0,"bad_probability":0.4578045787},{"actual_bad":0,"bad_probability":0.489813843},{"actual_bad":0,"bad_probability":0.6189067292},{"actual_bad":0,"bad_probability":0.3926466211},{"actual_bad":1,"bad_probability":0.5682126342},{"actual_bad":1,"bad_probability":0.6762014211},{"actual_bad":0,"bad_probability":0.1528323049},{"actual_bad":0,"bad_probability":0.3195814254},{"actual_bad":0,"bad_probability":0.5055039303},{"actual_bad":0,"bad_probability":0.2975553115},{"actual_bad":0,"bad_probability":0.3894794768},{"actual_bad":0,"bad_probability":0.3697650683},{"actual_bad":0,"bad_probability":0.0873227631},{"actual_bad":0,"bad_probability":0.2773110682},{"actual_bad":1,"bad_probability":0.4507249574},{"actual_bad":0,"bad_probability":0.025009018},{"actual_bad":0,"bad_probability":0.4968888927},{"actual_bad":0,"bad_probability":0.6520286694},{"actual_bad":1,"bad_probability":0.4455984632},{"actual_bad":0,"bad_probability":0.0349997564},{"actual_bad":1,"bad_probability":0.7348174568},{"actual_bad":0,"bad_probability":0.2626750593},{"actual_bad":1,"bad_probability":0.7354169098},{"actual_bad":0,"bad_probability":0.5101827222},{"actual_bad":1,"bad_probability":0.2565655673},{"actual_bad":1,"bad_probability":0.5962002231},{"actual_bad":0,"bad_probability":0.190693998},{"actual_bad":0,"bad_probability":0.1273688948},{"actual_bad":0,"bad_probability":0.0906939406},{"actual_bad":0,"bad_probability":0.0765105903},{"actual_bad":1,"bad_probability":0.5858427868},{"actual_bad":1,"bad_probability":0.565338176},{"actual_bad":0,"bad_probability":0.3978885477},{"actual_bad":0,"bad_probability":0.3794466285},{"actual_bad":1,"bad_probability":0.275154884},{"actual_bad":1,"bad_probability":0.550389014},{"actual_bad":1,"bad_probability":0.8181456669},{"actual_bad":0,"bad_probability":0.0993730296},{"actual_bad":0,"bad_probability":0.085758628},{"actual_bad":1,"bad_probability":0.1232456537},{"actual_bad":0,"bad_probability":0.1868027445},{"actual_bad":0,"bad_probability":0.6854693217},{"actual_bad":0,"bad_probability":0.1404353089},{"actual_bad":0,"bad_probability":0.0692150308},{"actual_bad":0,"bad_probability":0.4514027791},{"actual_bad":1,"bad_probability":0.3276208312},{"actual_bad":0,"bad_probability":0.1167136678},{"actual_bad":0,"bad_probability":0.3518745218},{"actual_bad":1,"bad_probability":0.3478314499},{"actual_bad":0,"bad_probability":0.4174221277},{"actual_bad":0,"bad_probability":0.2716028619},{"actual_bad":0,"bad_probability":0.0637864818},{"actual_bad":0,"bad_probability":0.1852000542},{"actual_bad":0,"bad_probability":0.1137367058},{"actual_bad":0,"bad_probability":0.2263435064},{"actual_bad":1,"bad_probability":0.1999952727},{"actual_bad":1,"bad_probability":0.4299942549},{"actual_bad":1,"bad_probability":0.7142534632},{"actual_bad":0,"bad_probability":0.1310670547},{"actual_bad":1,"bad_probability":0.2724943941},{"actual_bad":0,"bad_probability":0.0872775001},{"actual_bad":0,"bad_probability":0.1021681438},{"actual_bad":0,"bad_probability":0.6005588882},{"actual_bad":0,"bad_probability":0.6315838062},{"actual_bad":0,"bad_probability":0.0626330466},{"actual_bad":0,"bad_probability":0.6341291267},{"actual_bad":0,"bad_probability":0.2309800542},{"actual_bad":0,"bad_probability":0.0315725122},{"actual_bad":0,"bad_probability":0.0487516096},{"actual_bad":1,"bad_probability":0.7929786427},{"actual_bad":0,"bad_probability":0.3773036825},{"actual_bad":0,"bad_probability":0.4076763745},{"actual_bad":1,"bad_probability":0.5082857476},{"actual_bad":0,"bad_probability":0.6609302824},{"actual_bad":1,"bad_probability":0.5925850096},{"actual_bad":1,"bad_probability":0.6889971917},{"actual_bad":0,"bad_probability":0.0856451349},{"actual_bad":0,"bad_probability":0.2452078494},{"actual_bad":1,"bad_probability":0.4103918488},{"actual_bad":1,"bad_probability":0.7379341424},{"actual_bad":1,"bad_probability":0.7616768216},{"actual_bad":1,"bad_probability":0.5218642808},{"actual_bad":1,"bad_probability":0.6043441829},{"actual_bad":0,"bad_probability":0.0700759416},{"actual_bad":0,"bad_probability":0.1862015571},{"actual_bad":0,"bad_probability":0.1008796462},{"actual_bad":0,"bad_probability":0.0896715244}];const slider=document.getElementById('threshold');function update(){const t=Number(slider.value);let tn=0,fp=0,fn=0,tp=0;for(const r of data){const bad=r.bad_probability>=t;if(r.actual_bad){if(bad)tp++;else fn++;}else{if(bad)fp++;else tn++;}}document.getElementById('value').textContent=t.toFixed(2);document.getElementById('cost').textContent='Klaidų kaina: '+((1*fp+5*fn)/data.length).toFixed(3)+' = ('+1+' × '+fp+' + '+5+' × '+fn+') / '+data.length;document.getElementById('matrix').innerHTML='<table><tr><th></th><th>Prognozė good</th><th>Prognozė bad</th></tr><tr><th>Tikra good</th><td>TN '+tn+'</td><td>FP '+fp+'</td></tr><tr><th>Tikra bad</th><td>FN '+fn+'</td><td>TP '+tp+'</td></tr></table>';}slider.addEventListener('input',update);update();</script></html>

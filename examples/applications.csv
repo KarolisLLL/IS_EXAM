@@ -1,0 +1,3 @@
+checking_status,duration,credit_history,purpose,credit_amount,savings_status,employment,installment_commitment,personal_status,other_parties,residence_since,property_magnitude,age,other_payment_plans,housing,existing_credits,job,num_dependents,own_telephone,foreign_worker
+>=200,12,existing paid,radio/tv,1500,>=1000,>=7,2,male single,none,4,real estate,40,none,own,1,skilled,1,yes,yes
+<0,48,delayed previously,business,10000,<100,<1,4,male single,none,1,no known property,23,bank,rent,2,unskilled resident,1,none,yes

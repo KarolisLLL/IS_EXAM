@@ -1,0 +1,9 @@
+test_row,error_type,actual_class,predicted_class,bad_probability,decision_threshold,duration,credit_amount,checking_status,purpose,age
+409,false_negative,bad,good,0.12324565372504784,0.15000000000000002,12,939,>=200,new car,28
+190,false_negative,bad,good,0.14188904571485925,0.15000000000000002,24,4591,no checking,business,54
+278,false_negative,bad,good,0.14666812919692954,0.15000000000000002,6,4611,no checking,furniture/equipment,32
+286,false_positive,good,bad,0.6899463953483828,0.15000000000000002,48,4788,<0,used car,26
+815,false_positive,good,bad,0.6854693216778721,0.15000000000000002,36,7432,0<=X<200,new car,54
+501,false_positive,good,bad,0.673171949760882,0.15000000000000002,36,5493,<0,used car,42
+735,false_positive,good,bad,0.6645054739621353,0.15000000000000002,36,3990,0<=X<200,domestic appliance,29
+395,false_positive,good,bad,0.6609302823875005,0.15000000000000002,39,11760,0<=X<200,education,32

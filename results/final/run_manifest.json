@@ -1,0 +1,63 @@
+{
+  "started_utc": "2026-09-20T07:22:24.703244+00:00",
+  "python": "3.12.14",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.9.1",
+    "PyYAML": "6.0.3",
+    "joblib": "1.6.0",
+    "matplotlib": "3.11.2"
+  },
+  "quick": false,
+  "models": [
+    "majority",
+    "reject_all",
+    "logistic",
+    "svm",
+    "mlp",
+    "fuzzy"
+  ],
+  "settings": {
+    "seed": 2026,
+    "data": {
+      "openml_data_id": 31,
+      "cache_dir": "data/openml_cache_final",
+      "expected_target_values": [
+        "good",
+        "bad"
+      ],
+      "holdout_size": 0.2
+    },
+    "preprocessing": {
+      "drop_sensitive_features": false
+    },
+    "evaluation": {
+      "outer_splits": 5,
+      "outer_repeats": 3,
+      "inner_splits": 3,
+      "tuning_trials": 5,
+      "n_jobs": 1,
+      "calibration_bins": 10
+    },
+    "costs": {
+      "false_positive": 1.0,
+      "false_negative": 5.0
+    },
+    "models": {
+      "active": [
+        "majority",
+        "reject_all",
+        "logistic",
+        "svm",
+        "mlp",
+        "fuzzy"
+      ],
+      "main_candidate": "svm",
+      "mlp_max_iter": 400
+    },
+    "output": {
+      "directory": "results\\final"
+    }
+  }
+}
