@@ -1,8 +1,14 @@
-name: Tests
-on: [push, pull_request]
+name: Tests and experiment
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -11,3 +17,17 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python -m pytest -q
+      - name: Run quick experiment
+        if: github.event_name == 'workflow_dispatch'
+        run: python -m src.main --config config/experiment.yaml --quick
+      - name: Predict example applications
+        if: github.event_name == 'workflow_dispatch'
+        run: python -m src.predict --model results/quick/selected_model.joblib --input examples/applications.csv --output results/quick/predictions.csv
+      - name: Downloadable results
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rezultatai
+          path: results/quick/
+          if-no-files-found: error
+          retention-days: 7

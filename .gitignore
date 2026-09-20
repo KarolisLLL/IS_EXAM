@@ -16,3 +16,13 @@ Kredito_rizikos_galutinio_egzamino_ataskaita.docx
 results/quick/
 build/
 *.egg-info/
+
+# Regenerated diagnostics (also included in the HTML view)
+results/final/calibration_final_test.csv
+results/final/error_examples.csv
+results/final/fairness_audit.csv
+results/final/missing_value_robustness.csv
+results/final/sensitive_feature_ablation.csv
+results/final/test_predictions.csv
+results/predictions.csv
+results/verification.json

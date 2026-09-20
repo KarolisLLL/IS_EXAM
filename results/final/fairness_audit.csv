@@ -1,5 +1,0 @@
-audit,group,n,bad_recall,good_rejection_rate
-age_group,25_or_over,174,0.9361702127659575,0.6220472440944882
-age_group,under_25,26,1.0,0.8461538461538461
-personal_status_group,female,63,0.9545454545454546,0.7317073170731707
-personal_status_group,other,137,0.9473684210526315,0.6060606060606061
