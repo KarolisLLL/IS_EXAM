@@ -6,7 +6,8 @@ Veikiantis galutinio egzamino projektas pagal OpenML `credit-g` (ID 31). Palygin
 
 ## Darbas ir rezultatai
 
-- [Galutinė ataskaita](docs/galutinis_darbas.md)
+- [Išsami Word ataskaita](docs/Karolis_Lapinskas_Galutinio_darbo_ataskaita.docx)
+- [Galutinė ataskaita Markdown formatu](docs/galutinis_darbas.md)
 - [Vertinimo kriterijų 1.1–4.3 ir egzamino reikalavimų atitiktis](docs/reikalavimu_atitiktis.md)
 - [Rezultatų peržiūra](results/final/index.html) – atsisiuntus projektą atverti naršyklėje; GitHub failo rodinys HTML nevykdo.
 - [Pilno bandymo lentelė](results/final/model_summary.csv)
@@ -97,3 +98,4 @@ python -m pytest -q
 ```
 
 GitHub Actions paleidžia tuos pačius testus. Pilnas eksperimentas CI automatiškai nevykdomas. Istoriniai duomenys, mažos grupės, ribota parametrų paieška ir demonstraciniai kaštai riboja rezultatų pritaikymą. Išsami interpretacija pateikta ataskaitoje.
+
